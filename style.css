@@ -1,12 +1,67 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    background-color: #f4f4f9; /* Fondo suave */
+    padding: 20px;
+    margin: 0;
 }
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #555;
+}
+
 input, button {
     margin: 10px;
     padding: 10px;
+    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde sutil */
+    width: 80%; /* Ajusta el ancho de los campos */
+    max-width: 300px; /* Limita el ancho máximo */
+    box-sizing: border-box;
 }
+
+button {
+    background-color: #4CAF50; /* Botón verde */
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049; /* Color al pasar el ratón */
+}
+
 canvas {
     width: 100%;
     max-width: 400px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+#imagenes {
+    margin-top: 20px;
+}
+
+#imagenes img {
+    margin: 5px;
+    border-radius: 8px; /* Bordes redondeados en las imágenes */
+    max-width: 100px; /* Tamaño máximo de las imágenes */
+}
+
+input[type="file"] {
+    padding: 5px;
+    border: none;
+    background-color: #f8f8f8;
+}
+
+input[type="number"] {
+    width: 70%; /* Ajusta el ancho para que se vea más organizado */
 }
