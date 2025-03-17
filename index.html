@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi App de Peso</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Bienvenido a mi App de Peso</h1>
-    <p>Pronto aquí estará la app funcionando.</p>
+    <h1>Seguimiento de Peso</h1>
+
+    <label>Peso (kg):</label>
+    <input type="number" id="peso" placeholder="Ej: 80">
+    
+    <label>Horas de Ayuno:</label>
+    <input type="number" id="ayuno" placeholder="Ej: 16">
+
+    <label>Subir Foto:</label>
+    <input type="file" id="foto" accept="image/*">
+
+    <button onclick="guardarDatos()">Guardar</button>
+
+    <h2>Historial</h2>
+    <canvas id="grafica"></canvas>
+    <div id="imagenes"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
