@@ -1,20 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
+    color: #333;
 }
 
-h1, h2, h3 {
-    color: #333;
+header {
+    background-color: #4CAF50;
+    padding: 15px 0;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 0;
 }
 
 .form-container {
     background-color: #fff;
     padding: 20px;
-    margin: 20px auto;
-    max-width: 400px;
+    margin: 0 10px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -22,26 +33,34 @@ h1, h2, h3 {
 label {
     font-weight: bold;
     display: block;
-    margin: 10px 0 5px;
+    margin-bottom: 8px;
+    font-size: 16px;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin: 5px 0 20px;
-    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #4CAF50;
 }
 
 button {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 15px 20px;
-    text-align: center;
+    padding: 12px 20px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -49,59 +68,61 @@ button:hover {
 }
 
 #registros {
-    margin-top: 20px;
+    margin: 0 10px;
+}
+
+#registros-lista {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 15px;
 }
 
 .registro {
     background-color: #fff;
     padding: 15px;
-    margin-bottom: 20px;
-    width: 80%;
-    max-width: 400px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #4CAF50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-button {
+.registro button {
     background-color: #f44336;
-    padding: 5px 10px;
-    margin-top: 10px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+.registro button:hover {
     background-color: #d32f2f;
 }
 
 img {
-    margin-top: 10px;
-    max-width: 100px;
-    border-radius: 8px;
+    max-width: 80px;
+    border-radius: 5px;
 }
 
-/* Barra visual de IMC */
 #barraIMC {
-    height: 20px;
+    width: 100%;
+    height: 15px;
     border-radius: 10px;
-    transition: width 0.3s ease-in-out;
+    background: linear-gradient(to right, #3eeb88, #ffe700, #f44336);
+    margin-top: 10px;
 }
 
-/* Para colores del IMC */
-.red {
-    color: red;
-}
+@media screen and (max-width: 480px) {
+    .form-container {
+        margin: 0 5px;
+    }
 
-.green {
-    color: green;
-}
+    input, button {
+        padding: 10px;
+    }
 
-.orange {
-    color: orange;
-}
-
-.purple {
-    color: purple;
+    button {
+        width: 100%;
+    }
 }
