@@ -1,8 +1,27 @@
-document.addEventListener("DOMContentLoaded", mostrarDatos);
+// Función para calcular el IMC
+function calcularIMC(peso) {
+    const altura = 174 / 100;  // Altura en metros
+    const imc = peso / (altura * altura);
+    return imc;
+}
 
+// Función para clasificar el IMC
+function clasificarIMC(imc) {
+    if (imc < 18.5) {
+        return 'bajo-peso';
+    } else if (imc >= 18.5 && imc < 24.9) {
+        return 'normal';
+    } else if (imc >= 25 && imc < 29.9) {
+        return 'sobrepeso';
+    } else {
+        return 'obesidad';
+    }
+}
+
+// Función para guardar los datos
 function guardarDatos() {
     let peso = parseFloat(document.getElementById("peso").value);
-    let ayuno = parseInt(document.getElementById("ayuno").value);
+    let ayuno = document.getElementById("ayuno").value;
     let foto = document.getElementById("foto").files[0];
 
     if (!peso || !ayuno) {
@@ -10,16 +29,21 @@ function guardarDatos() {
         return;
     }
 
-    let altura = 1.74; // Altura en metros
-    let imc = calcularIMC(peso, altura);
-
-    let categoriaIMC = obtenerCategoriaIMC(imc);
     let fecha = new Date().toLocaleDateString();
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
 
     let reader = new FileReader();
     reader.onload = function (event) {
-        let nuevaEntrada = { fecha, peso, ayuno, imc, categoriaIMC, foto: event.target.result };
+        let imc = calcularIMC(peso);
+        let categoriaIMC = clasificarIMC(imc);
+        let nuevaEntrada = {
+            fecha,
+            peso,
+            ayuno,
+            foto: event.target.result,
+            imc,
+            categoriaIMC
+        };
         datos.push(nuevaEntrada);
         localStorage.setItem("historial", JSON.stringify(datos));
         mostrarDatos();
@@ -28,98 +52,69 @@ function guardarDatos() {
     if (foto) {
         reader.readAsDataURL(foto);
     } else {
-        let nuevaEntrada = { fecha, peso, ayuno, imc, categoriaIMC, foto: null };
+        let imc = calcularIMC(peso);
+        let categoriaIMC = clasificarIMC(imc);
+        let nuevaEntrada = { fecha, peso, ayuno, foto: null, imc, categoriaIMC };
         datos.push(nuevaEntrada);
         localStorage.setItem("historial", JSON.stringify(datos));
         mostrarDatos();
     }
 }
 
+// Función para mostrar los datos
 function mostrarDatos() {
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
-    let registrosDiv = document.getElementById("registros");
-    let barraIMC = document.getElementById("barraIMC");
+    let listaRegistros = document.getElementById("registros-lista");
+    listaRegistros.innerHTML = "";
 
-    registrosDiv.innerHTML = ""; // Limpiar registros previos
-    barraIMC.style.width = "0%"; // Limpiar barra visual
+    datos.forEach(entry => {
+        let registroDiv = document.createElement("div");
+        registroDiv.classList.add("registro");
 
-    if (datos.length === 0) {
-        registrosDiv.innerHTML = "<p>No hay registros guardados.</p>";
-        return;
-    }
+        // Mostrar la foto si existe
+        if (entry.foto) {
+            let img = document.createElement("img");
+            img.src = entry.foto;
+            img.alt = "Foto";
+            registroDiv.appendChild(img);
+        }
 
-    // Ordenar los registros por fecha
-    datos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        // Mostrar los datos de peso y ayuno
+        let p = document.createElement("p");
+        p.textContent = `Peso: ${entry.peso} kg | Ayuno: ${entry.ayuno} horas`;
+        registroDiv.appendChild(p);
 
-    datos.forEach((entry, index) => {
-        // Determinar el color del IMC
-        let imcColor = determinarColorIMC(entry.imc);
+        // Mostrar el IMC y su clasificación
+        let imcTexto = document.createElement("p");
+        imcTexto.textContent = `IMC: ${entry.imc.toFixed(2)} - ${entry.categoriaIMC}`;
+        registroDiv.appendChild(imcTexto);
 
-        let registroHTML = `
-            <div class="registro" style="color: ${imcColor}">
-                <p><strong>Fecha:</strong> ${entry.fecha}</p>
-                <p><strong>Peso:</strong> ${entry.peso} kg</p>
-                <p><strong>Horas de Ayuno:</strong> ${entry.ayuno} horas</p>
-                <p><strong>IMC:</strong> ${entry.imc}</p>
-                <p><strong>Categoría IMC:</strong> ${entry.categoriaIMC}</p>
-                ${entry.foto ? `<img src="${entry.foto}" width="100">` : ""}
-                <button onclick="eliminarRegistro(${index})">Eliminar</button>
-            </div>
-        `;
-        registrosDiv.innerHTML += registroHTML;
+        // Barra de IMC
+        let barraIMC = document.createElement("div");
+        barraIMC.classList.add("imc-bar", entry.categoriaIMC);
+        registroDiv.appendChild(barraIMC);
 
-        // Actualizar barra visual de IMC
-        let categoriaIndex = obtenerCategoriaIndex(entry.imc);
-        barraIMC.style.width = `${categoriaIndex}%`;
+        // Botón de eliminar
+        let btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "Eliminar";
+        btnEliminar.onclick = function () {
+            if (confirm("¿Estás seguro de eliminar este registro?")) {
+                eliminarRegistro(entry.fecha);
+            }
+        };
+        registroDiv.appendChild(btnEliminar);
+
+        listaRegistros.appendChild(registroDiv);
     });
 }
 
-function calcularIMC(peso, altura) {
-    return (peso / (altura * altura)).toFixed(2); // IMC = peso / altura^2
+// Función para eliminar un registro
+function eliminarRegistro(fecha) {
+    let datos = JSON.parse(localStorage.getItem("historial")) || [];
+    datos = datos.filter(entry => entry.fecha !== fecha);
+    localStorage.setItem("historial", JSON.stringify(datos));
+    mostrarDatos();
 }
 
-function obtenerCategoriaIMC(imc) {
-    if (imc < 18.5) {
-        return "Bajo Peso";
-    } else if (imc >= 18.5 && imc <= 24.9) {
-        return "Normal";
-    } else if (imc >= 25 && imc <= 29.9) {
-        return "Sobrepeso";
-    } else {
-        return "Obesidad";
-    }
-}
-
-function obtenerCategoriaIndex(imc) {
-    // Esto servirá para la barra visual, daremos un porcentaje para cada categoría
-    if (imc < 18.5) {
-        return 25; // Bajo peso
-    } else if (imc >= 18.5 && imc <= 24.9) {
-        return 50; // Normal
-    } else if (imc >= 25 && imc <= 29.9) {
-        return 75; // Sobrepeso
-    } else {
-        return 100; // Obesidad
-    }
-}
-
-function eliminarRegistro(index) {
-    if (window.confirm("¿Estás seguro de que deseas eliminar este registro?")) {
-        let datos = JSON.parse(localStorage.getItem("historial")) || [];
-        datos.splice(index, 1); // Eliminar el registro en la posición indicada
-        localStorage.setItem("historial", JSON.stringify(datos));
-        mostrarDatos();
-}
-
-// Función para determinar el color del IMC
-function determinarColorIMC(imc) {
-    if (imc < 18.5) {
-        return "red"; // IMC bajo
-    } else if (imc >= 18.5 && imc <= 24.9) {
-        return "green"; // IMC normal
-    } else if (imc >= 25 && imc <= 29.9) {
-        return "orange"; // IMC sobrepeso
-    } else {
-        return "purple"; // IMC obesidad
-    }
-}
+// Mostrar los datos al cargar la página
+document.addEventListener("DOMContentLoaded", mostrarDatos);
