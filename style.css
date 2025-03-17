@@ -105,12 +105,27 @@ img {
     border-radius: 5px;
 }
 
-#barraIMC {
+.imc-bar {
     width: 100%;
-    height: 15px;
+    height: 10px;
     border-radius: 10px;
-    background: linear-gradient(to right, #3eeb88, #ffe700, #f44336);
     margin-top: 10px;
+}
+
+.bajo-peso {
+    background-color: #f44336;
+}
+
+.normal {
+    background-color: #4CAF50;
+}
+
+.sobrepeso {
+    background-color: #ff9800;
+}
+
+.obesidad {
+    background-color: #f44336;
 }
 
 @media screen and (max-width: 480px) {
