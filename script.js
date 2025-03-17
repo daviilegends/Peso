@@ -123,29 +123,27 @@ function mostrarDatos() {
     }
 }
 
-// Función para eliminar un registro
+// Asegúrate de que el bloque `try-catch` esté dentro de una función
 function eliminarRegistro(fecha) {
-    
+    try {
+        // Tu código para manejar la eliminación del registro
         let datos = JSON.parse(localStorage.getItem("historial")) || [];
         
-        // Filtrar el registro específico que corresponde a la fecha
         const datosActualizados = datos.filter(entry => entry.fecha !== fecha);
         
-        // Si los datos han cambiado (hay elementos restantes)
         if (datosActualizados.length !== datos.length) {
-            localStorage.setItem("historial", JSON.stringify(datosActualizados)); // Guardar los datos actualizados en el localStorage
+            localStorage.setItem("historial", JSON.stringify(datosActualizados));
         }
 
-        mostrarDatos();  // Volver a mostrar los datos actualizados
-   
-
-
-
-        mostrarDatos();  // Volver a mostrar los datos actualizados
-     catch (error) {
+        mostrarDatos();
+    } catch (error) {
+        // Captura cualquier error y lo imprime en consola
         console.error("Error al eliminar el registro:", error);
     }
 }
+
+// Llamar a la función para eliminar el registro
+eliminarRegistro("2025-03-17");
 
 
 // Mostrar los datos al cargar la página
