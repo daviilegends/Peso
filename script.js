@@ -4,7 +4,7 @@ function calcularIMC(peso) {
     const imc = peso / (altura * altura);
     return imc;
 }
-
+ 
 // Función para clasificar el IMC
 function clasificarIMC(imc) {
     if (imc < 18.5) {
