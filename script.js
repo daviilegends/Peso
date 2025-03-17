@@ -143,6 +143,7 @@ function eliminarRegistro(fecha) {
 }
 
 
+
         mostrarDatos();  // Volver a mostrar los datos actualizados
      catch (error) {
         console.error("Error al eliminar el registro:", error);
