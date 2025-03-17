@@ -125,7 +125,7 @@ function mostrarDatos() {
 
 // Función para eliminar un registro
 function eliminarRegistro(fecha) {
-    try {
+    
         let datos = JSON.parse(localStorage.getItem("historial")) || [];
         
         // Filtrar el registro específico que corresponde a la fecha
@@ -138,7 +138,6 @@ function eliminarRegistro(fecha) {
 
         mostrarDatos();  // Volver a mostrar los datos actualizados
    
-}
 
 
 
