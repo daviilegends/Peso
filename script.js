@@ -1,9 +1,8 @@
-// Cargar datos guardados
 document.addEventListener("DOMContentLoaded", mostrarDatos);
 
 function guardarDatos() {
-    let peso = document.getElementById("peso").value;
-    let ayuno = document.getElementById("ayuno").value;
+    let peso = parseFloat(document.getElementById("peso").value);
+    let ayuno = parseInt(document.getElementById("ayuno").value);
     let foto = document.getElementById("foto").files[0];
 
     if (!peso || !ayuno) {
@@ -11,12 +10,15 @@ function guardarDatos() {
         return;
     }
 
+    let altura = 1.74; // Altura en metros
+    let imc = calcularIMC(peso, altura);
+
     let fecha = new Date().toLocaleDateString();
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
 
     let reader = new FileReader();
     reader.onload = function (event) {
-        let nuevaEntrada = { fecha, peso, ayuno, foto: event.target.result };
+        let nuevaEntrada = { fecha, peso, ayuno, imc, foto: event.target.result };
         datos.push(nuevaEntrada);
         localStorage.setItem("historial", JSON.stringify(datos));
         mostrarDatos();
@@ -25,7 +27,7 @@ function guardarDatos() {
     if (foto) {
         reader.readAsDataURL(foto);
     } else {
-        let nuevaEntrada = { fecha, peso, ayuno, foto: null };
+        let nuevaEntrada = { fecha, peso, ayuno, imc, foto: null };
         datos.push(nuevaEntrada);
         localStorage.setItem("historial", JSON.stringify(datos));
         mostrarDatos();
@@ -34,34 +36,40 @@ function guardarDatos() {
 
 function mostrarDatos() {
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
-    let imagenesDiv = document.getElementById("imagenes");
-    let ctx = document.getElementById("grafica").getContext("2d");
+    let registrosDiv = document.getElementById("registros");
 
-    imagenesDiv.innerHTML = "";
-    let pesos = [], fechas = [];
+    registrosDiv.innerHTML = ""; // Limpiar registros previos
 
-    datos.forEach(entry => {
-        fechas.push(entry.fecha);
-        pesos.push(entry.peso);
+    if (datos.length === 0) {
+        registrosDiv.innerHTML = "<p>No hay registros guardados.</p>";
+        return;
+    }
 
-        if (entry.foto) {
-            let img = document.createElement("img");
-            img.src = entry.foto;
-            img.width = 100;
-            imagenesDiv.appendChild(img);
-        }
+    // Ordenar los registros por fecha
+    datos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    datos.forEach((entry, index) => {
+        let registroHTML = `
+            <div class="registro">
+                <p><strong>Fecha:</strong> ${entry.fecha}</p>
+                <p><strong>Peso:</strong> ${entry.peso} kg</p>
+                <p><strong>Horas de Ayuno:</strong> ${entry.ayuno} horas</p>
+                <p><strong>IMC:</strong> ${entry.imc}</p>
+                ${entry.foto ? `<img src="${entry.foto}" width="100">` : ""}
+                <button onclick="eliminarRegistro(${index})">Eliminar</button>
+            </div>
+        `;
+        registrosDiv.innerHTML += registroHTML;
     });
+}
 
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: fechas,
-            datasets: [{
-                label: "Peso (kg)",
-                data: pesos,
-                borderColor: "blue",
-                fill: false
-            }]
-        }
-    });
+function calcularIMC(peso, altura) {
+    return (peso / (altura * altura)).toFixed(2); // IMC = peso / altura^2
+}
+
+function eliminarRegistro(index) {
+    let datos = JSON.parse(localStorage.getItem("historial")) || [];
+    datos.splice(index, 1); // Eliminar el registro en la posición indicada
+    localStorage.setItem("historial", JSON.stringify(datos));
+    mostrarDatos();
 }
