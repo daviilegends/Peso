@@ -89,42 +89,4 @@ button:hover {
 }
 
 /* Colores para la barra de IMC */
-.imc-bar.bajo-peso {
-    background-color: #FF5722; /* Color para bajo peso */
-}
-
-.imc-bar.normal {
-    background-color: #4CAF50; /* Color para normal */
-}
-
-.imc-bar.sobrepeso {
-    background-color: #FF9800; /* Color para sobrepeso */
-}
-
-.imc-bar.obesidad {
-    background-color: #F44336; /* Color para obesidad */
-}
-
-/* Botón de eliminar */
-button.eliminar {
-    background-color: #D32F2F;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-button.eliminar:hover {
-    background-color: #B71C1C;
-}
-
-/* Responsive para móviles */
-@media (max-width: 480px) {
-    .container {
-        padding: 15px;
-        width: 100%;
-    }
-
-    input, select, button {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
+.imc-bar.bajo-peso
