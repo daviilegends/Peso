@@ -89,4 +89,29 @@ button:hover {
 }
 
 /* Colores para la barra de IMC */
-.imc-bar.bajo-peso
+.imc-bar.bajo-peso {
+    background-color: #64B5F6;  /* Azul para bajo peso */
+}
+
+.imc-bar.normal {
+    background-color: #81C784;  /* Verde para normal */
+}
+
+.imc-bar.sobrepeso {
+    background-color: #FFEB3B;  /* Amarillo para sobrepeso */
+}
+
+.imc-bar.obesidad {
+    background-color: #F44336;  /* Rojo para obesidad */
+}
+
+/* Botón de eliminar */
+button {
+    background-color: #FF3D00;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
