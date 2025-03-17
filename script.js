@@ -42,7 +42,7 @@ function guardarDatos() {
             peso,
             ayuno,
             foto: event.target.result,
-            imc,
+            imc: isNaN(imc) ? 0 : imc,  // Asegurarse de que imc sea un número
             categoriaIMC
         };
         datos.push(nuevaEntrada);
@@ -56,7 +56,7 @@ function guardarDatos() {
     } else {
         let imc = calcularIMC(peso);
         let categoriaIMC = clasificarIMC(imc);
-        let nuevaEntrada = { fecha, peso, ayuno, foto: null, imc, categoriaIMC };
+        let nuevaEntrada = { fecha, peso, ayuno, foto: null, imc: isNaN(imc) ? 0 : imc, categoriaIMC };
         datos.push(nuevaEntrada);
         localStorage.setItem("historial", JSON.stringify(datos));
         mostrarDatos();
@@ -86,9 +86,13 @@ function mostrarDatos() {
         p.textContent = `Peso: ${entry.peso} kg | Ayuno: ${entry.ayuno} horas`;
         registroDiv.appendChild(p);
 
-        // Mostrar el IMC y su clasificación
+        // Mostrar el IMC y su clasificación, asegurándose de que IMC sea un número
         let imcTexto = document.createElement("p");
-        imcTexto.textContent = `IMC: ${entry.imc.toFixed(2)} - ${entry.categoriaIMC}`;
+        if (typeof entry.imc === 'number' && !isNaN(entry.imc)) {
+            imcTexto.textContent = `IMC: ${entry.imc.toFixed(2)} - ${entry.categoriaIMC}`;
+        } else {
+            imcTexto.textContent = `IMC no disponible - ${entry.categoriaIMC}`;
+        }
         registroDiv.appendChild(imcTexto);
 
         // Barra de IMC
