@@ -127,18 +127,21 @@ function mostrarDatos() {
 function eliminarRegistro(fecha) {
     try {
         let datos = JSON.parse(localStorage.getItem("historial")) || [];
-        datos = datos.filter(entry => entry.fecha !== fecha);
-        // Si no hay datos, eliminar el historial del localStorage
-        if (datos.length === 0) {
-            localStorage.removeItem("historial");
-        } else {
-            localStorage.setItem("historial", JSON.stringify(datos));
+        
+        // Filtrar el registro específico que corresponde a la fecha
+        const datosActualizados = datos.filter(entry => entry.fecha !== fecha);
+        
+        // Si los datos han cambiado (hay elementos restantes)
+        if (datosActualizados.length !== datos.length) {
+            localStorage.setItem("historial", JSON.stringify(datosActualizados)); // Guardar los datos actualizados en el localStorage
         }
-        mostrarDatos();
+
+        mostrarDatos();  // Volver a mostrar los datos actualizados
     } catch (error) {
         console.error("Error al eliminar el registro:", error);
     }
 }
+
 
 // Mostrar los datos al cargar la página
 document.addEventListener("DOMContentLoaded", mostrarDatos);
