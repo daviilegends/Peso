@@ -143,5 +143,12 @@ function eliminarRegistro(fecha) {
 }
 
 
+        mostrarDatos();  // Volver a mostrar los datos actualizados
+    } catch (error) {
+        console.error("Error al eliminar el registro:", error);
+    }
+}
+
+
 // Mostrar los datos al cargar la página
 document.addEventListener("DOMContentLoaded", mostrarDatos);
