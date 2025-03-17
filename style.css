@@ -1,143 +1,127 @@
-* {
-    box-sizing: border-box;
-}
-
+/* Estilo general */
 body {
     font-family: 'Arial', sans-serif;
+    background-color: #121212;  /* Fondo oscuro */
+    color: #E0E0E0;  /* Texto claro */
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
 }
 
-header {
-    background-color: #4CAF50;
-    padding: 15px 0;
-    text-align: center;
-    color: white;
-    margin-bottom: 20px;
-}
-
-h1 {
-    margin: 0;
-}
-
-.form-container {
-    background-color: #fff;
+/* Estilo del contenedor principal */
+.container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #1F1F1F;  /* Fondo oscuro con un toque gris */
+    border-radius: 10px;
     padding: 20px;
-    margin: 0 10px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
 
-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
+/* Estilo para los inputs */
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #2C2C2C;
+    color: #E0E0E0;
     font-size: 16px;
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
-
-input:focus {
-    border-color: #4CAF50;
-}
-
+/* Botón */
 button {
-    background-color: #4CAF50;
+    background-color: #6200EE;  /* Color de botón elegante */
     color: white;
     border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 5px;
     cursor: pointer;
-    width: 100%;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #3700B3;  /* Color más oscuro al pasar el ratón */
 }
 
-#registros {
-    margin: 0 10px;
-}
-
-#registros-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.registro {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.registro button {
-    background-color: #f44336;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.registro button:hover {
-    background-color: #d32f2f;
-}
-
-img {
-    max-width: 80px;
-    border-radius: 5px;
-}
-
-.imc-bar {
+/* Lista de registros */
+.registros-lista {
     width: 100%;
+    margin-top: 20px;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* Estilo para los registros */
+.registro {
+    background-color: #2C2C2C;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Imagen de la foto */
+.registro img {
+    max-width: 100px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Texto de los registros */
+.registro p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* IMC y su clasificación */
+.imc-bar {
     height: 10px;
-    border-radius: 10px;
+    width: 100%;
     margin-top: 10px;
+    border-radius: 5px;
 }
 
-.bajo-peso {
-    background-color: #f44336;
+.imc-bar.bajo-peso {
+    background-color: #FF5722; /* Color para bajo peso */
 }
 
-.normal {
-    background-color: #4CAF50;
+.imc-bar.normal {
+    background-color: #4CAF50; /* Color para normal */
 }
 
-.sobrepeso {
-    background-color: #ff9800;
+.imc-bar.sobrepeso {
+    background-color: #FF9800; /* Color para sobrepeso */
 }
 
-.obesidad {
-    background-color: #f44336;
+.imc-bar.obesidad {
+    background-color: #F44336; /* Color para obesidad */
 }
 
-@media screen and (max-width: 480px) {
-    .form-container {
-        margin: 0 5px;
-    }
+/* Botón de eliminar */
+button.eliminar {
+    background-color: #D32F2F;
+    margin-top: 10px;
+    font-size: 14px;
+}
 
-    input, button {
-        padding: 10px;
-    }
+button.eliminar:hover {
+    background-color: #B71C1C;
+}
 
-    button {
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
         width: 100%;
+    }
+
+    input, select, button {
+        font-size: 14px;
+        padding: 8px;
     }
 }
