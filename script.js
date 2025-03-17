@@ -65,7 +65,7 @@ function guardarDatos() {
 function mostrarDatos() {
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
     let listaRegistros = document.getElementById("registros-lista");
-    listaRegistros.innerHTML = "";
+    listaRegistros.innerHTML = "";  // Limpiar lista antes de mostrar
 
     datos.forEach(entry => {
         let registroDiv = document.createElement("div");
