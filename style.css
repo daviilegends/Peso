@@ -1,75 +1,71 @@
-document.addEventListener("DOMContentLoaded", mostrarDatos);
-
-function guardarDatos() {
-    let peso = parseFloat(document.getElementById("peso").value);
-    let ayuno = parseInt(document.getElementById("ayuno").value);
-    let foto = document.getElementById("foto").files[0];
-
-    if (!peso || !ayuno) {
-        alert("Por favor ingresa peso y horas de ayuno.");
-        return;
-    }
-
-    let altura = 1.74; // Altura en metros
-    let imc = calcularIMC(peso, altura);
-
-    let fecha = new Date().toLocaleDateString();
-    let datos = JSON.parse(localStorage.getItem("historial")) || [];
-
-    let reader = new FileReader();
-    reader.onload = function (event) {
-        let nuevaEntrada = { fecha, peso, ayuno, imc, foto: event.target.result };
-        datos.push(nuevaEntrada);
-        localStorage.setItem("historial", JSON.stringify(datos));
-        mostrarDatos();
-    };
-
-    if (foto) {
-        reader.readAsDataURL(foto);
-    } else {
-        let nuevaEntrada = { fecha, peso, ayuno, imc, foto: null };
-        datos.push(nuevaEntrada);
-        localStorage.setItem("historial", JSON.stringify(datos));
-        mostrarDatos();
-    }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9; /* Fondo suave */
+    padding: 20px;
+    margin: 0;
 }
 
-function mostrarDatos() {
-    let datos = JSON.parse(localStorage.getItem("historial")) || [];
-    let registrosDiv = document.getElementById("registros");
-
-    registrosDiv.innerHTML = ""; // Limpiar registros previos
-
-    if (datos.length === 0) {
-        registrosDiv.innerHTML = "<p>No hay registros guardados.</p>";
-        return;
-    }
-
-    // Ordenar los registros por fecha
-    datos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
-    datos.forEach((entry, index) => {
-        let registroHTML = `
-            <div class="registro">
-                <p><strong>Fecha:</strong> ${entry.fecha}</p>
-                <p><strong>Peso:</strong> ${entry.peso} kg</p>
-                <p><strong>Horas de Ayuno:</strong> ${entry.ayuno} horas</p>
-                <p><strong>IMC:</strong> ${entry.imc}</p>
-                ${entry.foto ? `<img src="${entry.foto}" width="100">` : ""}
-                <button onclick="eliminarRegistro(${index})">Eliminar</button>
-            </div>
-        `;
-        registrosDiv.innerHTML += registroHTML;
-    });
+h1 {
+    color: #333;
+    margin-bottom: 20px;
 }
 
-function calcularIMC(peso, altura) {
-    return (peso / (altura * altura)).toFixed(2); // IMC = peso / altura^2
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #555;
 }
 
-function eliminarRegistro(index) {
-    let datos = JSON.parse(localStorage.getItem("historial")) || [];
-    datos.splice(index, 1); // Eliminar el registro en la posición indicada
-    localStorage.setItem("historial", JSON.stringify(datos));
-    mostrarDatos();
+input, button {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#registros {
+    margin-top: 20px;
+}
+
+.registro {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.registro img {
+    border-radius: 8px;
+    max-width: 100px;
+}
+
+button {
+    background-color: #f44336;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #d32f2f;
 }
