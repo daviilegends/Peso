@@ -49,8 +49,11 @@ function mostrarDatos() {
     datos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
     datos.forEach((entry, index) => {
+        // Determinar el color del IMC
+        let imcColor = determinarColorIMC(entry.imc);
+
         let registroHTML = `
-            <div class="registro">
+            <div class="registro" style="color: ${imcColor}">
                 <p><strong>Fecha:</strong> ${entry.fecha}</p>
                 <p><strong>Peso:</strong> ${entry.peso} kg</p>
                 <p><strong>Horas de Ayuno:</strong> ${entry.ayuno} horas</p>
@@ -68,8 +71,21 @@ function calcularIMC(peso, altura) {
 }
 
 function eliminarRegistro(index) {
-    let datos = JSON.parse(localStorage.getItem("historial")) || [];
-    datos.splice(index, 1); // Eliminar el registro en la posición indicada
-    localStorage.setItem("historial", JSON.stringify(datos));
-    mostrarDatos();
+    if (window.confirm("¿Estás seguro de que deseas eliminar este registro?")) {
+        let datos = JSON.parse(localStorage.getItem("historial")) || [];
+        datos.splice(index, 1); // Eliminar el registro en la posición indicada
+        localStorage.setItem("historial", JSON.stringify(datos));
+        mostrarDatos();
+    }
+}
+
+// Función para determinar el color del IMC
+function determinarColorIMC(imc) {
+    if (imc < 18.5) {
+        return "red"; // IMC bajo
+    } else if (imc >= 18.5 && imc <= 24.9) {
+        return "green"; // IMC normal
+    } else {
+        return "orange"; // IMC alto
+    }
 }
