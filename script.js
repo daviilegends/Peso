@@ -21,11 +21,12 @@ function clasificarIMC(imc) {
 // Función para guardar los datos
 function guardarDatos() {
     let peso = parseFloat(document.getElementById("peso").value);
-    let ayuno = document.getElementById("ayuno").value;
+    let ayuno = parseFloat(document.getElementById("ayuno").value);  // Asegúrate de que ayuno sea un número
     let foto = document.getElementById("foto").files[0];
 
-    if (!peso || !ayuno) {
-        alert("Por favor ingresa peso y horas de ayuno.");
+    // Validación de entrada
+    if (isNaN(peso) || isNaN(ayuno) || peso <= 0 || ayuno <= 0) {
+        alert("Por favor ingresa peso y horas de ayuno válidos.");
         return;
     }
 
@@ -49,6 +50,7 @@ function guardarDatos() {
         mostrarDatos();
     };
 
+    // Si hay foto, leerla, de lo contrario solo guardar los datos sin foto
     if (foto) {
         reader.readAsDataURL(foto);
     } else {
@@ -112,7 +114,12 @@ function mostrarDatos() {
 function eliminarRegistro(fecha) {
     let datos = JSON.parse(localStorage.getItem("historial")) || [];
     datos = datos.filter(entry => entry.fecha !== fecha);
-    localStorage.setItem("historial", JSON.stringify(datos));
+    // Si no hay datos, eliminar el historial del localStorage
+    if (datos.length === 0) {
+        localStorage.removeItem("historial");
+    } else {
+        localStorage.setItem("historial", JSON.stringify(datos));
+    }
     mostrarDatos();
 }
 
