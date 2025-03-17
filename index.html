@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi App de Peso</title>
+    <title>Registro de Peso</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Seguimiento de Peso</h1>
+    <h1>Registro de Peso y Ayuno</h1>
 
-    <label>Peso (kg):</label>
-    <input type="number" id="peso" placeholder="Ej: 80">
-    
-    <label>Horas de Ayuno:</label>
-    <input type="number" id="ayuno" placeholder="Ej: 16">
+    <div class="form-container">
+        <label for="peso">Peso (kg):</label>
+        <input type="number" id="peso" placeholder="Ingresa tu peso" required>
+        
+        <label for="ayuno">Horas de Ayuno:</label>
+        <input type="number" id="ayuno" placeholder="Ingresa las horas de ayuno" required>
+        
+        <label for="foto">Foto (opcional):</label>
+        <input type="file" id="foto">
+        
+        <button onclick="guardarDatos()">Guardar Registro</button>
+    </div>
 
-    <label>Subir Foto:</label>
-    <input type="file" id="foto" accept="image/*">
-
-    <button onclick="guardarDatos()">Guardar</button>
-
-    <h2>Historial</h2>
+    <h2>Registros</h2>
     <div id="registros"></div>
+
+    <h3>Barra de IMC</h3>
+    <div id="barraIMC" style="width: 100%; height: 20px; background-color: lightgray; margin-top: 10px;"></div>
 
     <script src="script.js"></script>
 </body>
