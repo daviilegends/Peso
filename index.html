@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peso ideal</title>
+    <title>Peso Ideal</title>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Peso Ideal1222</h1>
+        <h1>Peso Ideal</h1>
 
         <!-- Formulario para ingresar datos -->
         <input type="number" id="peso" placeholder="Peso (kg)" required>
@@ -18,17 +18,19 @@
         
         <!-- Lista de registros -->
         <h2>Historial</h2>
-<ul id="lista-historial"></ul>
+        <ul id="lista-historial"></ul>
 
-<button onclick="guardarHistorial({ accion: 'Nueva acción', fecha: new Date().toISOString() })">
-    Agregar Registro
-</button>
-
-<button onclick="limpiarHistorial()">Limpiar Historial</button>
-
-
+        <button onclick="guardarHistorial()">Agregar Registro</button>
+        <button onclick="limpiarHistorial()">Limpiar Historial</button>
     </div>
 
-
+    <!-- Modal de confirmación para borrar -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3>¿Estás seguro de que quieres borrar este registro?</h3>
+            <button onclick="confirmarEliminar(true)">Sí</button>
+            <button onclick="confirmarEliminar(false)">No</button>
+        </div>
+    </div>
 </body>
 </html>
