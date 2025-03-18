@@ -1,3 +1,7 @@
+function guardarDatos() {
+    console.log("Guardando datos...");
+}
+
 // Cargar LZString con Base64 segura
 const LZString = {
     compressToBase64: (str) => btoa(unescape(encodeURIComponent(str))),
