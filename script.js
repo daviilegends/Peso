@@ -1,7 +1,3 @@
-function guardarDatos() {
-    console.log("Guardando datos...");
-}
-
 // Cargar LZString con Base64 segura
 const LZString = {
     compressToBase64: (str) => btoa(unescape(encodeURIComponent(str))),
@@ -37,12 +33,16 @@ function guardarHistorial(nuevoRegistro) {
     try {
         const datosComprimidos = LZString.compressToBase64(JSON.stringify(historial));
         localStorage.setItem("historial", datosComprimidos);
+        console.log("✅ Historial guardado correctamente.");
     } catch (e) {
         if (e.name === "QuotaExceededError") {
             console.warn("⚠️ Se ha superado la cuota de localStorage. Limpiando datos...");
             localStorage.removeItem("historial");
         }
     }
+
+    // Actualizar la lista en la interfaz
+    mostrarHistorial();
 }
 
 // Función para eliminar un registro específico por índice
@@ -62,26 +62,43 @@ function eliminarRegistro(indice) {
     } else {
         console.warn("⚠️ Índice no válido.");
     }
+
+    // Actualizar la lista en la interfaz
+    mostrarHistorial();
 }
 
-// Función para ver el tamaño del almacenamiento
-function getStorageSize() {
-    let total = 0;
-    for (let key in localStorage) {
-        if (localStorage.hasOwnProperty(key)) {
-            total += localStorage.getItem(key).length;
-        }
-    }
-    console.log(`📦 Tamaño total en localStorage: ${total / 1024} KB`);
+// Función para mostrar historial en la interfaz
+function mostrarHistorial() {
+    const historial = obtenerHistorial();
+    const lista = document.getElementById("lista-historial");
+
+    // Limpiar la lista antes de volver a mostrarla
+    lista.innerHTML = "";
+
+    historial.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.accion} - ${item.fecha}`;
+
+        // Botón para eliminar registro
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "❌";
+        btnEliminar.onclick = () => eliminarRegistro(index);
+
+        li.appendChild(btnEliminar);
+        lista.appendChild(li);
+    });
 }
 
 // Función para limpiar historial manualmente
 function limpiarHistorial() {
     localStorage.removeItem("historial");
     console.log("🗑️ Historial limpiado.");
+
+    // Actualizar la lista en la interfaz
+    mostrarHistorial();
 }
 
-// 📌 Ejemplo de uso:
-guardarHistorial({ accion: "Usuario inició sesión", fecha: new Date().toISOString() });
-console.log("📜 Historial actualizado:", obtenerHistorial());
-getStorageSize();
+// 📌 Cargar historial al inicio
+document.addEventListener("DOMContentLoaded", () => {
+    mostrarHistorial();
+});
