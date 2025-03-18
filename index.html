@@ -18,7 +18,16 @@
         <button onclick="guardarDatos()">Guardar</button>
 
         <!-- Lista de registros -->
-        <ul id="registros-lista" class="registros-lista"></ul>
+        <h2>Historial</h2>
+<ul id="lista-historial"></ul>
+
+<button onclick="guardarHistorial({ accion: 'Nueva acción', fecha: new Date().toISOString() })">
+    Agregar Registro
+</button>
+
+<button onclick="limpiarHistorial()">Limpiar Historial</button>
+
+
     </div>
 
 
