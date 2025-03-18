@@ -34,6 +34,25 @@ function guardarHistorial(nuevoRegistro) {
     }
 }
 
+// Función para eliminar un registro específico por índice
+function eliminarRegistro(indice) {
+    let historial = obtenerHistorial();
+    
+    if (indice >= 0 && indice < historial.length) {
+        historial.splice(indice, 1); // Eliminar solo el registro en la posición dada
+
+        try {
+            const datosComprimidos = LZString.compressToUTF16(JSON.stringify(historial));
+            localStorage.setItem("historial", datosComprimidos);
+            console.log(`🗑️ Registro eliminado en índice ${indice}`);
+        } catch (e) {
+            console.error("❌ Error al actualizar el historial después de eliminar.");
+        }
+    } else {
+        console.warn("⚠️ Índice no válido.");
+    }
+}
+
 // Función para ver el tamaño del almacenamiento
 function getStorageSize() {
     let total = 0;
