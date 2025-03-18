@@ -1,16 +1,3 @@
-// Cargar LZString con Base64 segura
-const LZString = {
-    compressToBase64: (str) => btoa(unescape(encodeURIComponent(str))),
-    decompressFromBase64: (str) => {
-        try {
-            return decodeURIComponent(escape(atob(str)));
-        } catch (e) {
-            console.error("❌ Error al descomprimir datos:", e);
-            return "[]"; // Retorna un array vacío si falla la descompresión
-        }
-    }
-};
-
 // Función para obtener el historial de `localStorage`
 function obtenerHistorial() {
     const datosComprimidos = localStorage.getItem("historial");
@@ -18,15 +5,32 @@ function obtenerHistorial() {
 }
 
 // Función para guardar historial de forma optimizada
-function guardarHistorial(nuevoRegistro) {
+function guardarHistorial() {
+    const peso = document.getElementById('peso').value;
+    const ayuno = document.getElementById('ayuno').value;
+    const foto = document.getElementById('foto').files[0];
+
+    if (!peso || !ayuno) {
+        alert("Por favor, completa los campos.");
+        return;
+    }
+
     let historial = obtenerHistorial();
 
+    // Crear objeto de registro con la foto si existe
+    const nuevoRegistro = {
+        peso: peso,
+        ayuno: ayuno,
+        fecha: new Date().toISOString(),
+        foto: foto ? URL.createObjectURL(foto) : null
+    };
+
     // Agregar nuevo registro
-    historial.push(nuevoRegistro);
+    historial.unshift(nuevoRegistro); // Agregar al principio
 
     // Si hay demasiados registros, eliminar los más antiguos
     if (historial.length > 50) {
-        historial = historial.slice(-50);
+        historial = historial.slice(0, 50);
     }
 
     // Intentar guardar en `localStorage`
@@ -41,30 +45,40 @@ function guardarHistorial(nuevoRegistro) {
         }
     }
 
+    // Limpiar campos
+    document.getElementById('peso').value = '';
+    document.getElementById('ayuno').value = '';
+    document.getElementById('foto').value = '';
+
     // Actualizar la lista en la interfaz
     mostrarHistorial();
 }
 
-// Función para eliminar un registro específico por índice
+// Función para eliminar un registro específico
+let registroAEliminar = null;
 function eliminarRegistro(indice) {
-    let historial = obtenerHistorial();
-    
-    if (indice >= 0 && indice < historial.length) {
-        historial.splice(indice, 1); // Eliminar solo el registro en la posición dada
+    registroAEliminar = indice;
+    document.getElementById('modal').style.display = 'block';
+}
+
+// Confirmación de eliminación
+function confirmarEliminar(confirmado) {
+    if (confirmado && registroAEliminar !== null) {
+        let historial = obtenerHistorial();
+        historial.splice(registroAEliminar, 1); // Eliminar solo el registro seleccionado
 
         try {
             const datosComprimidos = LZString.compressToBase64(JSON.stringify(historial));
             localStorage.setItem("historial", datosComprimidos);
-            console.log(`🗑️ Registro eliminado en índice ${indice}`);
+            console.log(`🗑️ Registro eliminado en índice ${registroAEliminar}`);
         } catch (e) {
             console.error("❌ Error al actualizar el historial después de eliminar.");
         }
-    } else {
-        console.warn("⚠️ Índice no válido.");
+        mostrarHistorial();
     }
 
-    // Actualizar la lista en la interfaz
-    mostrarHistorial();
+    // Cerrar el modal
+    document.getElementById('modal').style.display = 'none';
 }
 
 // Función para mostrar historial en la interfaz
@@ -77,7 +91,13 @@ function mostrarHistorial() {
 
     historial.forEach((item, index) => {
         const li = document.createElement("li");
-        li.textContent = `${item.accion} - ${item.fecha}`;
+        li.classList.add("registro");
+        li.innerHTML = `
+            <p>Peso: ${item.peso} kg</p>
+            <p>Horas de ayuno: ${item.ayuno}</p>
+            <p>Fecha: ${item.fecha}</p>
+            ${item.foto ? `<img src="${item.foto}" alt="Imagen">` : ''}
+        `;
 
         // Botón para eliminar registro
         const btnEliminar = document.createElement("button");
@@ -93,8 +113,6 @@ function mostrarHistorial() {
 function limpiarHistorial() {
     localStorage.removeItem("historial");
     console.log("🗑️ Historial limpiado.");
-
-    // Actualizar la lista en la interfaz
     mostrarHistorial();
 }
 
